@@ -9,8 +9,19 @@ Description: >
 Globals:
   Function:
     Timeout: 3
+    Runtime: nodejs16.x
+    Layers:
+      - !Ref TempConversionDepLayer
 
 Resources:
+  CommonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: common
+      ContentUri: src/common/
+      CompatibleRuntimes:
+        - nodejs16.x
+
   helloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:

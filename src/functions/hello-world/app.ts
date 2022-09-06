@@ -1,6 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { add } from 'ramda';
-
+import { addNos } from '/opt/nodejs/commonHelpers';
 /**
  *
  * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
@@ -12,9 +11,9 @@ import { add } from 'ramda';
  */
 
 export const helloWorldHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const xx = add(2, 3);
-    const yy = add(7)(10);
+    const xx = addNos(2, 3);
     let response: APIGatewayProxyResult;
+
     try {
         response = {
             statusCode: 200,
