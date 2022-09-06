@@ -20,7 +20,7 @@
         "typeRoots": ["./node_modules/@types"],
         "baseUrl": ".",
         "paths": {
-            "/opt/nodejs/*": ["common/*"]
+            "/opt/nodejs/*": ["src/common/nodejs/*"]
         },
         "outDir": "./dist"
     },
