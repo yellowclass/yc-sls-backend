@@ -9,12 +9,31 @@ Description: >
 Globals:
     Function:
         Timeout: 3
+        Runtime: nodejs16.x
+        Layers:
+            - !Ref NodeModulesLayer
+            - !Ref CommonLayer
 
 Resources:
+    NodeModulesLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: node-modules
+            ContentUri: node-modules-layer/
+            CompatibleRuntimes:
+                - nodejs16.x
+    CommonLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: common
+            ContentUri: common-layer/
+            CompatibleRuntimes:
+                - nodejs16.x
+
     helloWorldFunction:
         Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
         Properties:
-            CodeUri: src/hello-world
+            CodeUri: src/functions/hello-world
             Handler: app.helloWorldHandler
             Runtime: nodejs16.x
             Architectures:
@@ -39,7 +58,7 @@ Resources:
     getAllItemsFunction:
         Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
         Properties:
-            CodeUri: src/get-all-items
+            CodeUri: src/functions/get-all-items
             Handler: app.getAllItemsHandler
             Runtime: nodejs16.x
             Architectures:
@@ -64,7 +83,7 @@ Resources:
     getItemByIdFunction:
         Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
         Properties:
-            CodeUri: src/get-item-by-id
+            CodeUri: src/functions/get-item-by-id
             Handler: app.getItemByIdHandler
             Runtime: nodejs16.x
             Architectures:
