@@ -18,7 +18,7 @@ export const helloWorldHandler = async (event: APIGatewayProxyEvent): Promise<AP
         response = {
             statusCode: 200,
             body: JSON.stringify({
-                message: `hello world${xx}-${yy}`,
+                message: `hello world${xx}`,
             }),
         };
     } catch (err: unknown) {
