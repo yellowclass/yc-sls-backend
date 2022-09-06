@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { add } from 'ramda';
+import { isNotEmptyObject } from '/opt/nodejs/commonHelpers';
+// import { add } from 'ramda';
 
 /**
  *
@@ -12,15 +13,18 @@ import { add } from 'ramda';
  */
 
 export const helloWorldHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const xx = add(2, 3);
-    const yy = add(7)(10);
+    // const xx = add(2, 3);
+    // const yy = add(7, 10);
     let response: APIGatewayProxyResult;
+    const res = {
+        message: `hello world`,
+        // message: `hello world${xx}-${yy}`,
+    };
+    console.log('first', isNotEmptyObject(res));
     try {
         response = {
             statusCode: 200,
-            body: JSON.stringify({
-                message: `hello world${xx}-${yy}`,
-            }),
+            body: JSON.stringify(res),
         };
     } catch (err: unknown) {
         console.log(err);

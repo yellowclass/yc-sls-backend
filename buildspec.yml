@@ -1,22 +1,28 @@
 version: 0.2
 phases:
-  install:
-    commands:
-      # Install all dependencies (including dependencies for running tests)
-      - npm install
-  pre_build:
-    commands:
-      # Discover and run unit tests in the '__tests__' directory
-      - npm run test
-      # Remove all unit tests to reduce the size of the package that will be ultimately uploaded to Lambda
-      - rm -rf ./__tests__
-      # Remove all dependencies not needed for the Lambda deployment package (the packages from devDependencies in package.json)
-      - npm prune --production
-  build:
-    commands:
-      # Use AWS SAM to package the application by using AWS CloudFormation
-      - aws cloudformation package --template template.yaml --s3-bucket $S3_BUCKET --output-template template-export.yml
+    install:
+        commands:
+            # Install all dependencies (including dependencies for running tests)
+            - npm install -g typescript
+    pre_build:
+        commands:
+            # Remove all dependencies not needed for the Lambda deployment package (the packages from devDependencies in package.json)
+            - npm prune --production
+    build:
+        commands:
+            - npm install
+            - npm prune --production
+            - tsc
+            # node modules layer
+            - mkdir -p node-modules-layer/nodejs
+            - mv node_modules node-modules-layer/nodejs/
+            # common layer
+            - mkdir -p common-layer/nodejs
+            - mv dist/common/* common-layer/nodejs/
+    post_build:
+        commands:
+            - aws cloudformation package --template template.yaml --s3-bucket $S3_BUCKET --output-template template-export.yml
 artifacts:
-  type: zip
-  files:
-    - template-export.yml
+    type: zip
+    files:
+        - template-export.yml
